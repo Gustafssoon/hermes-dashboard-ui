@@ -1,0 +1,278 @@
+/* ============================================
+   Hermes Dashboard UI - Custom Styles
+   ============================================ */
+
+:root {
+  /* Palette */
+  --bg-primary: #0f1117;
+  --bg-secondary: #161822;
+  --bg-card: #1a1d27;
+  --bg-hover: #22263a;
+
+  --text-primary: #e4e6f0;
+  --text-secondary: #8b8fa3;
+  --text-muted: #5a5e72;
+
+  --accent: #7c6aef;
+  --accent-light: #a89cf5;
+  --accent-dark: #5a48c8;
+
+  --ok: #3dcf8c;
+  --warn: #f0a050;
+  --err: #ef5a5a;
+
+  --border: #2a2e3e;
+  --radius: 8px;
+  --radius-sm: 4px;
+
+  --font-mono: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Topbar --- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent-light);
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-ok { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+.dot-err { background: var(--err); box-shadow: 0 0 6px var(--err); }
+
+.status-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.version {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* --- Dashboard grid --- */
+.dashboard {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 16px;
+  padding: 16px 24px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 800px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.card h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-status { grid-column: 1 / -1; }
+
+/* --- Status grid --- */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.status-item .label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-item .value {
+  font-size: 15px;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+/* --- Badges --- */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+.badge-ok { background: rgba(61, 207, 140, 0.15); color: var(--ok); }
+.badge-warn { background: rgba(240, 160, 80, 0.15); color: var(--warn); }
+.badge-err { background: rgba(239, 90, 90, 0.15); color: var(--err); }
+
+/* --- Session list --- */
+.session-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.session-item:last-child { border-bottom: none; }
+.session-title { color: var(--text-primary); }
+.session-meta { color: var(--text-muted); font-family: var(--font-mono); font-size: 11px; }
+
+/* --- Themes --- */
+.theme-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.theme-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.theme-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.theme-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* --- Raw JSON --- */
+.card-raw { grid-column: 1 / -1; }
+
+.raw-json {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* --- Plugin list --- */
+.plugin-item {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.plugin-item:last-child { border-bottom: none; }
+.plugin-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.plugin-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* --- Empty state --- */
+.empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* --- Footer --- */
+.footer {
+  padding: 12px 24px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+}

@@ -1,0 +1,14 @@
+[Unit]
+Description=Hermes Dashboard UI Proxy (nginx)
+After=network-online.target hermes-dashboard.service
+Requires=hermes-dashboard.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/nginx -t -c /opt/hermes-dashboard-custom/deploy/nginx-hermes-dashboard-ui.conf
+ExecStart=/usr/sbin/nginx -c /opt/hermes-dashboard-custom/deploy/nginx-hermes-dashboard-ui.conf -g 'daemon off;'
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

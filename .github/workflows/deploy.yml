@@ -1,0 +1,79 @@
+# ============================================================
+# GitHub Actions workflow: deploy hermes-dashboard-custom
+#
+# Triggers: push to main
+# Strategy: rsync static files to VPS as deploy-user, restart via sudo
+#
+# Required repository secrets:
+#   VPS_HOST       - VPS IP or hostname (e.g. 185.x.x.x)
+#   VPS_USER       - SSH user (must be "deploy")
+#   VPS_PORT       - SSH port (e.g. 22)
+#   VPS_SSH_KEY    - Private SSH key for deploy-user (ed25519 PEM)
+#   DEPLOY_PATH    - Target directory (e.g. /opt/hermes-dashboard-custom)
+#
+# Access control:
+#   deploy user owns /opt/hermes-dashboard-custom
+#   deploy user has passwordless sudo for exactly these commands:
+#     /bin/systemctl restart hermes-dashboard-ui.service
+#     /bin/systemctl status hermes-dashboard-ui.service
+#     /bin/systemctl is-active hermes-dashboard-ui.service
+#     /usr/sbin/nginx -t -c /opt/hermes-dashboard-custom/deploy/nginx-hermes-dashboard-ui.conf
+#   Everything else is blocked by sudoers policy.
+# ============================================================
+
+name: Deploy Hermes Dashboard UI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      - name: Add VPS to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.VPS_PORT }} -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Verify nginx config on VPS (sudo)
+        run: |
+          ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "sudo /usr/sbin/nginx -t -c ${{ secrets.DEPLOY_PATH }}/deploy/nginx-hermes-dashboard-ui.conf"
+
+      - name: Rsync project files to VPS
+        run: |
+          rsync -avz --delete \
+            -e "ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=yes" \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude="node_modules" \
+            "${{ github.workspace }}/" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Restart systemd service on VPS (sudo)
+        run: |
+          ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "sudo /bin/systemctl restart hermes-dashboard-ui.service && sudo /bin/systemctl is-active hermes-dashboard-ui.service && echo DEPLOY_OK"
+
+      - name: Verify deployment (HTTP 200)
+        run: |
+          HTTP_CODE=$(ssh -p ${{ secrets.VPS_PORT }} -o StrictHostKeyChecking=yes \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:9120/")
+          echo "HTTP status: ${HTTP_CODE}"
+          if [ "${HTTP_CODE}" != "200" ]; then
+            echo "ERROR: expected 200, got ${HTTP_CODE}"
+            exit 1
+          fi
