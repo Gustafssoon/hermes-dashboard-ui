@@ -33,32 +33,32 @@ const PANTHEON_DATA = {
   services: [
     {
       id: "nas", name: "Synology DSM", kind: "NAS", icon: "hard-drive",
-      state: "nominal", detail: "DS920+ · DSM 7.2.1 · 41°C", checked: "3m ago",
+      state: "nominal", detail: "DS225 · DSM · 41°C", checked: "3m ago",
       host: "nas.tingzel.lan:5001",
-      metrics: [["Model", "DS920+"], ["DSM", "7.2.1-69057"], ["Temp", "41°C"], ["Fan", "nominal"]],
+      metrics: [["Model", "DS225"], ["DSM", "verified via NAS"], ["Temp", "41°C"], ["Fan", "nominal"]],
     },
     {
       id: "dns", name: "Technitium", kind: "DNS", icon: "network",
       state: "nominal", detail: "412 q/min · 73% cache hit · 4 ms", checked: "2m ago",
-      host: "dns.tingzel.lan:5380",
+      host: "ns1.tingzel.lan:5380",
       metrics: [["Service", "running"], ["Queries", "412/min"], ["Blocked", "18.4%"], ["Latency", "4 ms"]],
     },
     {
       id: "portainer", name: "Portainer", kind: "Containers", icon: "boxes",
       state: "attention", detail: "5 stacks · 1 container restarting", checked: "1m ago",
-      host: "portainer.tingzel.lan:9443",
+      host: "portainer.tingzel.lan:9000",
       metrics: [["Endpoint", "local"], ["Stacks", "5"], ["Containers", "14"], ["Issue", "media · restarting"]],
     },
     {
       id: "twingate", name: "Twingate", kind: "Access", icon: "route",
-      state: "nominal", detail: "Connector tingzel-gw connected · 1 device", checked: "1m ago",
+      state: "nominal", detail: "Connector tingzel-lan-connector-01 connected · 1 device", checked: "1m ago",
       host: "tingzel.twingate.com",
-      metrics: [["Connector", "tingzel-gw"], ["State", "connected"], ["Devices", "1"], ["Exposure", "none public"]],
+      metrics: [["Connector", "tingzel-lan-connector-01"], ["State", "connected"], ["Devices", "1"], ["Exposure", "none public"]],
     },
     {
       id: "hermes", name: "Hermes Dashboard", kind: "Agent", icon: "send",
       state: "nominal", detail: "v2.4.1 · 2 sessions · gateway running", checked: "2m ago",
-      host: "hermes.tingzel.lan:9120",
+      host: "hermes-dashboard.tingzel.lan:9120",
       metrics: [["Version", "2.4.1"], ["Sessions", "2"], ["Gateway", "running"], ["Config", "v17"]],
     },
     {
@@ -71,8 +71,8 @@ const PANTHEON_DATA = {
 
   /* ---- Synology DSM / NAS health ---- */
   nas: {
-    model: "Synology DS920+",
-    dsm: "DSM 7.2.1-69057 Update 5",
+    model: "Synology DS225",
+    dsm: "DSM · version placeholder",
     temp: "41°C",
     fan: "nominal",
     uptime: "31d 04h",
@@ -119,16 +119,16 @@ const PANTHEON_DATA = {
   /* ---- Hermes / Links & routing ---- */
   links: [
     { label: "Synology DSM",     url: "https://nas.tingzel.lan:5001",       group: "Services" },
-    { label: "Technitium DNS",   url: "http://dns.tingzel.lan:5380",        group: "Services" },
-    { label: "Portainer",        url: "https://portainer.tingzel.lan:9443", group: "Services" },
-    { label: "Hermes Dashboard", url: "https://hermes.tingzel.lan:9120",    group: "Services" },
+    { label: "Technitium DNS",   url: "http://ns1.tingzel.lan:5380",        group: "Services" },
+    { label: "Portainer",        url: "https://portainer.tingzel.lan:9000", group: "Services" },
+    { label: "Hermes Dashboard", url: "https://hermes-dashboard.tingzel.lan:9120",    group: "Services" },
     { label: "Hue Bridge",       url: "http://hue.tingzel.lan",             group: "Services" },
     { label: "Twingate Admin",   url: "https://tingzel.twingate.com",       group: "Access" },
   ],
 
   /* ---- Twingate remote access ---- */
   routing: {
-    connector: "tingzel-gw",
+    connector: "tingzel-lan-connector-01",
     state: "nominal",
     devices: 1,
     network: "tingzel.twingate.com",
@@ -162,9 +162,9 @@ const PANTHEON_DATA = {
   /* ---- TLS certificate freshness for internal services ---- */
   certificates: [
     { host: "nas.tingzel.lan",       issuer: "Synology",    days: 12, state: "attention", note: "renew soon" },
-    { host: "hermes.tingzel.lan",    issuer: "Internal CA", days: 41, state: "info",      note: "" },
+    { host: "hermes-dashboard.tingzel.lan",    issuer: "Internal CA", days: 41, state: "info",      note: "" },
     { host: "portainer.tingzel.lan", issuer: "Internal CA", days: 64, state: "nominal",   note: "" },
-    { host: "dns.tingzel.lan",       issuer: "Internal CA", days: 88, state: "nominal",   note: "" },
+    { host: "ns1.tingzel.lan",       issuer: "Internal CA", days: 88, state: "nominal",   note: "" },
   ],
 
   /* ---- Aegis / Backup freshness & restore verification ---- */
@@ -197,7 +197,7 @@ const PANTHEON_DATA = {
   runbooks: [
     { id: "dns",   title: "DNS not resolving",            epigraph: "Know the path before the message.", steps: ["Check the Technitium service is up (Hephaestus → technitium stack).", "Confirm upstream forwarders (Cloudflare, Quad9) are reachable.", "Flush the client resolver cache and re-run the Oracle DNS probe."] },
     { id: "stack", title: "A Docker stack won't start",   epigraph: "The forge cools when the fuel runs out.", steps: ["Open Portainer → the stack → container logs.", "Check disk space on volume1 (Oracle → disk usage).", "Recreate the stack; watch the failing container come up."] },
-    { id: "remote",title: "Can't reach services remotely",epigraph: "The messenger needs an open road.", steps: ["Verify the Twingate connector tingzel-gw is connected (Hermes → remote access).", "Confirm the device has an active Twingate session.", "Fall back to LAN only if on-site."] },
+    { id: "remote",title: "Can't reach services remotely",epigraph: "The messenger needs an open road.", steps: ["Verify the Twingate connector tingzel-lan-connector-01 is connected (Hermes → remote access).", "Confirm the device has an active Twingate session.", "Fall back to LAN only if on-site."] },
     { id: "nas",   title: "NAS volume degraded",          epigraph: "Guard the vault first.", steps: ["Read SMART status per disk (Hephaestus → storage).", "Do not write; verify the latest snapshot is intact (Aegis).", "Plan a rebuild during a quiet window."] },
     { id: "cert",  title: "Internal TLS cert expiring",   epigraph: "Renew the seal before it breaks.", steps: ["Identify the host nearing expiry (Oracle → certificates).", "Reissue from the Internal CA or Synology, depending on issuer.", "Re-deploy the cert and confirm the freshness check turns nominal."] },
   ],
@@ -207,7 +207,7 @@ const PANTHEON_DATA = {
     title: "Start here when something is down",
     line: "Work top to bottom. Stop when you find the break.",
     steps: [
-      { n: 1, title: "Is the gateway up?",     detail: "Twingate connector tingzel-gw — without it, nothing is reachable remotely.", icon: "route",      service: "twingate" },
+      { n: 1, title: "Is the gateway up?",     detail: "Twingate connector tingzel-lan-connector-01 — without it, nothing is reachable remotely.", icon: "route",      service: "twingate" },
       { n: 2, title: "Can DNS resolve?",       detail: "Technitium — most 'everything is down' reports are really DNS.",             icon: "network",    service: "dns" },
       { n: 3, title: "Is the NAS reachable?",  detail: "Synology DSM — storage backs most stacks. Check before restarting things.",  icon: "hard-drive", service: "nas" },
       { n: 4, title: "Docker daemon + stacks", detail: "Portainer — confirm the daemon is alive, then the failing stack.",           icon: "boxes",      service: "portainer" },

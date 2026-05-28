@@ -50,7 +50,7 @@ emit the string.
   "kind": "NAS",                // short category chip
   "icon": "hard-drive",         // Lucide name (see icons.jsx)
   "state": "nominal",
-  "detail": "DS920+ · DSM 7.2.1 · 41°C",
+  "detail": "DS225 · DSM · 41°C",
   "checked": "3m ago",          // relative freshness
   "host": "nas.tingzel.lan:5001",
   "metrics": [["Temp", "41°C"]] // compact [label, value] pairs
