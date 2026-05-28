@@ -1,0 +1,19 @@
+/* Shared framing for Design System preview cards.
+   Cards show tokens directly with minimal decoration. */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg-base);
+  color: var(--fg1);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  padding: 22px 24px;
+}
+.cap { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.16em; color: var(--fg3); }
+.mono { font-family: var(--font-mono); }
+.swatches { display: flex; gap: 0; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--border); }
+.sw { flex: 1; height: 64px; display: flex; align-items: flex-end; padding: 7px 8px; }
+.sw .lab { font-family: var(--font-mono); font-size: 9.5px; line-height: 1.3; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }

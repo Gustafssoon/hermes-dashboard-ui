@@ -1,0 +1,273 @@
+/* ============================================================
+   TINGZEL PANTHEON — Foundations: Color & Type
+   ------------------------------------------------------------
+   A calm, Athena-inspired operations console.
+   Obsidian + dark stone surfaces · marble/parchment neutrals
+   · muted antique gold · laurel green · Aegean blue.
+
+   Structure (token grammar) is adapted from the Hermes
+   Dashboard UI; the palette is re-skinned to the Pantheon
+   direction. Load this on every Pantheon surface.
+   ============================================================ */
+
+/* Fonts loaded via Google Fonts CDN — see README "Font substitution".
+   Add this <link> to <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+*/
+
+:root {
+  /* ---------------------------------------------------------
+     1 · CORE PALETTE — raw tones (don't reference directly
+     in components unless you must; prefer the roles below)
+     --------------------------------------------------------- */
+
+  /* Obsidian / dark stone surfaces — warm-cool charcoal */
+  --obsidian:        #0D0F12;  /* deepest void — app background */
+  --stone-900:       #131519;  /* base canvas */
+  --stone-800:       #181B20;  /* sunken wells, code blocks */
+  --stone-700:       #1C2026;  /* card surface */
+  --stone-600:       #22262E;  /* raised / hover surface */
+  --stone-500:       #2A2F38;  /* active / pressed surface */
+
+  /* Marble / parchment neutrals — warm, never pure white */
+  --marble-100:      #ECE6D8;  /* primary text — warm marble */
+  --marble-200:      #D7D0BF;  /* high-emphasis on dark */
+  --parchment-400:   #A39C8C;  /* secondary text — aged stone */
+  --parchment-600:   #6E6A60;  /* muted text, captions */
+  --parchment-700:   #54514A;  /* disabled / faint */
+
+  /* Antique gold — the accent. Muted, never neon. Used sparingly. */
+  --gold-300:        #E0C98C;  /* bright edge / focus glow */
+  --gold-400:        #C9A961;  /* primary gold accent */
+  --gold-500:        #B0904B;  /* gold on light, pressed gold */
+  --gold-700:        #7C673A;  /* deep gold, dim borders */
+
+  /* Laurel / olive green — calm "healthy" secondary */
+  --laurel-300:      #A7BE84;
+  --laurel-400:      #8AA362;  /* healthy / nominal */
+  --laurel-600:      #5E7342;
+
+  /* Aegean blue — informational / links / routing */
+  --aegean-300:      #8FB6CC;
+  --aegean-400:      #6699B5;  /* info / link */
+  --aegean-600:      #436074;
+
+  /* Amphora red — caution / down. Oxidized terracotta, not neon. */
+  --amphora-300:     #D98E7E;
+  --amphora-400:     #C25B4E;  /* critical / down */
+  --amphora-600:     #7E382F;
+
+  /* Borders & dividers — hairline warm charcoal */
+  --line:            #282C33;  /* default border */
+  --line-strong:     #353A44;  /* emphasized border */
+  --line-faint:      #1E2228;  /* subtle inner divider */
+
+  /* ---------------------------------------------------------
+     2 · SEMANTIC ROLES — reference these in components
+     --------------------------------------------------------- */
+
+  /* Backgrounds */
+  --bg-app:          var(--obsidian);
+  --bg-base:         var(--stone-900);
+  --bg-sunken:       var(--stone-800);
+  --bg-card:         var(--stone-700);
+  --bg-raised:       var(--stone-600);
+  --bg-active:       var(--stone-500);
+
+  /* Foregrounds */
+  --fg1:             var(--marble-100);   /* primary text */
+  --fg2:             var(--parchment-400); /* secondary text */
+  --fg3:             var(--parchment-600); /* muted / labels */
+  --fg-disabled:     var(--parchment-700);
+
+  /* Accent */
+  --accent:          var(--gold-400);
+  --accent-bright:   var(--gold-300);
+  --accent-deep:     var(--gold-700);
+  --on-accent:       #1A1407;             /* text on solid gold */
+
+  /* Status — operational signal colors */
+  --ok:              var(--laurel-400);
+  --warn:            var(--gold-400);
+  --crit:            var(--amphora-400);
+  --info:            var(--aegean-400);
+  --idle:            var(--parchment-600);
+
+  /* Status — translucent fills for badges / wells */
+  --ok-fill:         rgba(138, 163, 98, 0.14);
+  --warn-fill:       rgba(201, 169, 97, 0.14);
+  --crit-fill:       rgba(194, 91, 78, 0.15);
+  --info-fill:       rgba(102, 153, 181, 0.14);
+  --idle-fill:       rgba(110, 106, 96, 0.14);
+
+  /* Lines */
+  --border:          var(--line);
+  --border-strong:   var(--line-strong);
+  --divider:         var(--line-faint);
+
+  /* Focus ring */
+  --focus-ring:      0 0 0 1px var(--obsidian), 0 0 0 3px rgba(201, 169, 97, 0.45);
+
+  /* ---------------------------------------------------------
+     3 · TYPE FAMILIES
+     --------------------------------------------------------- */
+  --font-serif: "Cormorant Garamond", "Times New Roman", Georgia, serif; /* classical display — god/section names, page titles */
+  --font-sans:  "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; /* UI text, labels, body */
+  --font-mono:  "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace; /* data values, versions, timestamps, IDs */
+
+  /* ---------------------------------------------------------
+     4 · TYPE SCALE  (rem on a 16px root)
+     --------------------------------------------------------- */
+  --text-2xs:  11px;
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   17px;
+  --text-lg:   20px;
+  --text-xl:   26px;
+  --text-2xl:  34px;
+  --text-3xl:  46px;
+  --text-4xl:  62px;
+
+  --leading-tight: 1.15;
+  --leading-snug:  1.35;
+  --leading-normal:1.55;
+
+  /* Tracking */
+  --track-tight:  -0.01em;
+  --track-normal: 0;
+  --track-wide:   0.04em;
+  --track-caps:   0.14em;  /* uppercase eyebrow / card headers */
+
+  /* ---------------------------------------------------------
+     5 · SPACING  (4px base grid)
+     --------------------------------------------------------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---------------------------------------------------------
+     6 · RADII — architectural, restrained
+     --------------------------------------------------------- */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius:    8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* ---------------------------------------------------------
+     7 · ELEVATION — soft, low, like light over stone
+     --------------------------------------------------------- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.40);
+  --shadow:    0 4px 14px rgba(0,0,0,0.45);
+  --shadow-lg: 0 18px 48px rgba(0,0,0,0.55);
+  --inset-well: inset 0 1px 0 rgba(0,0,0,0.35);
+  /* Hairline top-light that reads like engraved stone */
+  --edge-light: inset 0 1px 0 rgba(236,230,216,0.04);
+}
+
+/* ============================================================
+   SEMANTIC TYPE STYLES — apply as classes or @extend in your CSS
+   ============================================================ */
+
+.t-display {           /* huge classical title (login, splash) */
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-tight);
+  color: var(--fg1);
+}
+
+.t-h1 {                /* page / section-god title */
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  color: var(--fg1);
+}
+
+.t-h2 {                /* sub-section */
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--fg1);
+}
+
+.t-eyebrow {           /* uppercase tracked label above titles */
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  color: var(--fg3);
+}
+
+.t-card-title {        /* card header — Hermes-derived */
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--track-caps);
+  color: var(--fg2);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--fg1);
+}
+
+.t-body-sm {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--fg2);
+}
+
+.t-label {             /* field labels, key/value keys */
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--track-wide);
+  color: var(--fg3);
+}
+
+.t-value {             /* the operational data — always mono */
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--text-base);
+  color: var(--fg1);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-mono-sm {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--text-xs);
+  color: var(--fg2);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-quote {             /* runbook / oracle aphorism */
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  color: var(--fg2);
+}

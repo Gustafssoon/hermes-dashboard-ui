@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tingzel Pantheon — Wordmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Hanken+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg-app);
+    color: var(--fg1);
+    font-family: var(--font-sans);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-12);
+  }
+
+  /* ---- The reusable wordmark ---- */
+  .pantheon-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  /* Monogram: pillared "Π" (Pantheon) inside an engraved ring */
+  .pantheon-glyph {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent-deep);
+    box-shadow: var(--edge-light);
+    display: grid;
+    place-items: center;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(201,169,97,0.10), transparent 60%),
+      var(--bg-raised);
+    position: relative;
+  }
+  .pantheon-glyph::after {
+    content: "Π";
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--accent);
+    transform: translateY(1px);
+  }
+  .pantheon-word {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .pantheon-word .name {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--marble-100);
+  }
+  .pantheon-word .name em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .pantheon-word .tag {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.34em;
+    color: var(--fg3);
+    margin-top: 5px;
+  }
+
+  /* Topbar lockup (compact, as used in the console) */
+  .lockup-bar {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 9px;
+  }
+  .lockup-bar .lg {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: 0.02em;
+    color: var(--marble-100);
+  }
+  .lockup-bar .lg em { font-style: normal; color: var(--accent); }
+  .lockup-bar .sub {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--fg3);
+  }
+
+  .panel {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    align-items: center;
+  }
+  .swatch-light { background: var(--marble-100); padding: 28px 34px; border-radius: var(--radius); }
+  .swatch-light .pantheon-word .name { color: #15110A; }
+  .swatch-light .pantheon-word .name em { color: var(--gold-500); }
+  .swatch-light .pantheon-word .tag { color: #8A7A52; }
+  .swatch-light .pantheon-glyph { background: #fff; border-color: var(--gold-500); }
+  .swatch-light .pantheon-glyph::after { color: var(--gold-500); }
+  .caption {
+    font-family: var(--font-mono); font-size: 11px; color: var(--fg3);
+    text-align: center; letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <div class="pantheon-mark">
+      <div class="pantheon-glyph"></div>
+      <div class="pantheon-word">
+        <span class="name">Tingzel <em>Pantheon</em></span>
+        <span class="tag">Operations Console</span>
+      </div>
+    </div>
+    <div class="caption">Primary lockup — on obsidian</div>
+  </div>
+
+  <div class="panel">
+    <div class="swatch-light">
+      <div class="pantheon-mark">
+        <div class="pantheon-glyph"></div>
+        <div class="pantheon-word">
+          <span class="name">Tingzel <em>Pantheon</em></span>
+          <span class="tag">Operations Console</span>
+        </div>
+      </div>
+    </div>
+    <div class="caption">On marble</div>
+  </div>
+
+  <div class="panel">
+    <div class="pantheon-glyph" style="width:64px;height:64px;border-width:2px;"></div>
+    <div class="lockup-bar">
+      <span class="lg">Tingzel <em>Pantheon</em></span>
+      <span class="sub">Console</span>
+    </div>
+    <div class="caption">Monogram + topbar lockup</div>
+  </div>
+</body>
+</html>
