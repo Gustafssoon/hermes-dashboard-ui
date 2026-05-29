@@ -16,3 +16,6 @@ config/production.yaml
 
 # Deploy logs
 deploy/*.log
+
+# Local public backups
+public.bak.*/
